@@ -72,7 +72,9 @@
         ip = eptr+14;
         version = (*(char*)(ip))>>4;
         printf("IPv%d PACKET : \n",version);
-        length = (*(char*)(ip))-version<<4;
+        if(version==6)
+            continue;
+        length = ((*(char*)(ip))&15)*4;
         printf("\tDestination IP\t: ");
         for(int i=12;i<=15;i++)
         {
@@ -93,7 +95,6 @@
         // TCP Packet
         tcp = ip+length;
         printf("TCP PACKET : \n");
-        printf("%x %x %x %x\n",*(tcp),*(tcp+1),*(tcp+2),*(tcp+3));
         printf("\tDestination Port: %d",ntohs((*(short*)(tcp+2))));
         printf("\n\tSource Port\t: %d",ntohs((*(short*)(tcp))));
         printf("\n");
